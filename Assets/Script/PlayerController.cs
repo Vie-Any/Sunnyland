@@ -34,7 +34,12 @@ public class PlayerController : MonoBehaviour
         //Init animator object
         animator = GetComponent<Animator>();
         //Init collider object
-        collider2D = GetComponent<BoxCollider2D>();
+        /**
+         * Bug fix , BoxCollider will cause a bug[refer to the DailyLog.md file at 2021-05-07], it's because BoxCollider's corner will touching ground's unit corner, then it will make the player cannot move.
+         * To fix the bug: use two collider, BoxCollider is for the player's upper body, the CircleCollider for the player's lower body
+         */
+        // collider2D = GetComponent<BoxCollider2D>();
+        collider2D = GetComponent<CircleCollider2D>();
     }
 
     // Update is called once per frame

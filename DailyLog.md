@@ -1,5 +1,9 @@
 #Log
 
+## 2021-05-08
+- Bug fixed.
+- - [Chapter 8-Bug fixed](https://www.bilibili.com/video/BV194411o7WG)
+
 ## 2021-05-07
 
 - Create Animation for the player
