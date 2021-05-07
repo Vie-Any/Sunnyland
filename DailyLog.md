@@ -1,5 +1,14 @@
 #Log
 
+## 2021-05-07
+
+- Create Animation for the player
+- Use the script to switch the player's different animation when the condition was reached(Such as idle, running, jumping, falling).
+  + found a bug: If I press left or right movement key down and release right now and then hold on same direction movement button, the player will not movement. Why?
+- [Chapter 6-Animation](https://www.bilibili.com/video/BV1d4411d79u)
+- [Chapter 7-Animation of jump & Layermask](https://www.bilibili.com/video/BV1z4411o7W4)
+
+
 ## 2021-05-06
 
 - Create Unity 2D project
