@@ -26,6 +26,9 @@ public class PlayerController : MonoBehaviour
     //The rigid body object of the ground
     public LayerMask ground;
 
+    // count the cherry collected by the player
+    public int cherry = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -115,6 +118,16 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("falling",false);
             //mean while set idle as true
             animator.SetBool("idle",true );
+        }
+    }
+
+    // if another collider touching current collider then trigger the function
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Collection"))
+        {
+            Destroy(other.gameObject);
+            cherry += 1;
         }
     }
 }

@@ -1,16 +1,27 @@
 #Log
 
+## 2021-05-09
+
+- Use script to make the main camera follw the player sence
+- Add cinemachine and use 2D Camera bound the camera to the player
+- Create goods let the player collect
+- Use script to make the player collect goods
+- Enrich the environment element of the sence
+- [[video] Chapter 9-Cinemachine - Camera contrl](https://www.bilibili.com/video/BV1r4411d7Zv)
+- [[video] Chapter 10-Collect goods & Prefabs](https://www.bilibili.com/video/BV1Q441197nf)
+
 ## 2021-05-08
+
 - Bug fixed.
-- - [Chapter 8-Bug fixed](https://www.bilibili.com/video/BV194411o7WG)
+- [[video] Chapter 8-Bug fixed](https://www.bilibili.com/video/BV194411o7WG)
 
 ## 2021-05-07
 
 - Create Animation for the player
 - Use the script to switch the player's different animation when the condition was reached(Such as idle, running, jumping, falling).
   + found a bug: If I press left or right movement key down and release right now and then hold on same direction movement button, the player will not movement. Why?
-- [Chapter 6-Animation](https://www.bilibili.com/video/BV1d4411d79u)
-- [Chapter 7-Animation of jump & Layermask](https://www.bilibili.com/video/BV1z4411o7W4)
+- [[video] Chapter 6-Animation](https://www.bilibili.com/video/BV1d4411d79u)
+- [[video] Chapter 7-Animation of jump & Layermask](https://www.bilibili.com/video/BV1z4411o7W4)
 
 
 ## 2021-05-06
@@ -23,11 +34,11 @@
 - Add a script to the player for control the play behavior.
   + create a method for control the player movement.
   + create a method for control the player jump and flip direction.
-- [Chapter 1-Unity install](https://www.bilibili.com/video/BV1W4411Z7UC)
-- [Chapter 2-asset resource import & Tilemap learning](https://www.bilibili.com/video/BV1W4411Z7xs)
-- [Chapter 3-Layer & The player](https://www.bilibili.com/video/BV1r4411Z7dD)
-- [Chapter 4-The player movement](https://www.bilibili.com/video/BV1f4411Z7oL)
-- [Chapter 5-Flip the player direction & jump](https://www.bilibili.com/video/BV154411f7Pa)
+- [[video] Chapter 1-Unity install](https://www.bilibili.com/video/BV1W4411Z7UC)
+- [[video] Chapter 2-asset resource import & Tilemap learning](https://www.bilibili.com/video/BV1W4411Z7xs)
+- [[video] Chapter 3-Layer & The player](https://www.bilibili.com/video/BV1r4411Z7dD)
+- [[video] Chapter 4-The player movement](https://www.bilibili.com/video/BV1f4411Z7oL)
+- [[video] Chapter 5-Flip the player direction & jump](https://www.bilibili.com/video/BV154411f7Pa)
 
 
 
