@@ -1,12 +1,27 @@
 #Log
 
+## 2021-05-10
+- Add physics material to the player and set friction zero so that the player will not hang on the wall.
+- Enrich the environment element of the scene.
+- Limit the player counld not jump until the player was landed to the ground.
+- Add canvas to the scene.
+- Add UI.Text component to the scene.
+- Add UI.Image component to the scene.
+- Set the relative posion for component so that the component will display well in different aspect.
+- Use script update the cherry number collected by the player to the text component of the scene.
+- Found Bug:
+  + Sometime the number of cherry collected by the player will increase two time in the function. Why?
+- [[video] Chapter 11- Physics Material & limit jump time](https://www.bilibili.com/video/BV1A441167MF)
+- [[video] Chapter 12- UI.Text & UI.Image & update UI.Text value from script](https://www.bilibili.com/video/BV1Z4411z7MZ)
+
+
 ## 2021-05-09
 
 - Use script to make the main camera follw the player sence
 - Add cinemachine and use 2D Camera bound the camera to the player
 - Create goods let the player collect
 - Use script to make the player collect goods
-- Enrich the environment element of the sence
+- Enrich the environment element of the scene
 - [[video] Chapter 9-Cinemachine - Camera contrl](https://www.bilibili.com/video/BV1r4411d7Zv)
 - [[video] Chapter 10-Collect goods & Prefabs](https://www.bilibili.com/video/BV1Q441197nf)
 

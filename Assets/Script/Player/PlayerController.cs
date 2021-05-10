@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /**
  * The script to contorl the player
@@ -26,8 +27,11 @@ public class PlayerController : MonoBehaviour
     //The rigid body object of the ground
     public LayerMask ground;
 
-    // count the cherry collected by the player
+    // the number of cherry collected by the player
     public int cherry = 0;
+
+    // the text of display component for number of cherry collected by the player
+    public Text cherryNum;
 
     // Start is called before the first frame update
     void Start()
@@ -87,7 +91,7 @@ public class PlayerController : MonoBehaviour
     void Jump()
     {
         //listen to the space(default setting of unity, Unity menu bar>Edit>project setting>Input manager>Axes) button so that to implement jump function
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && collider2D.IsTouchingLayers(ground))
         {
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
             animator.SetBool("jumping",true);
@@ -127,7 +131,11 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Collection"))
         {
             Destroy(other.gameObject);
+            Debug.Log("before cherry:"+cherry);
             cherry += 1;
+            Debug.Log("after cherry:"+cherry);
+            // update the number of cherry collected by the player to the text component text value
+            cherryNum.text = cherry.ToString();
         }
     }
 }
