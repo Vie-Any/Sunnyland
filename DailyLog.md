@@ -1,5 +1,17 @@
 #Log
 
+## 2021-05-11
+- Add an enemy(frog) to the scene
+- Create an idle animation for the frog
+- Use script to implement when the player falling to the frog then destory the frog and jump again
+- Add hurt animation to the player
+- Use script to control the hurt animation play or not and when the player get hurt then make a short distance reverse movement to the player for make the game more funny.
+- Add crouch animation to the player
+- Use script to control the player enter crouch state or exit crouch state and crouch animation play or not 
+- [[video] Chapter 13-Add an enemy](https://www.bilibili.com/video/BV1F4411z7Jy)
+- [[video] Chapter 14-Make the player get hury](https://www.bilibili.com/video/BV1F4411z7Jy)
+
+
 ## 2021-05-10
 - Add physics material to the player and set friction zero so that the player will not hang on the wall.
 - Enrich the environment element of the scene.
@@ -17,7 +29,7 @@
 
 ## 2021-05-09
 
-- Use script to make the main camera follw the player sence
+- Use script to make the main camera follw the player scene
 - Add cinemachine and use 2D Camera bound the camera to the player
 - Create goods let the player collect
 - Use script to make the player collect goods

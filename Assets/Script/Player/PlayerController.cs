@@ -33,6 +33,12 @@ public class PlayerController : MonoBehaviour
     // the text of display component for number of cherry collected by the player
     public Text cherryNum;
 
+    // mark the player is hurt or not
+    private bool isHurt;
+
+    // mark the player is crouch or not
+    private bool isCrouch;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,10 +63,13 @@ public class PlayerController : MonoBehaviour
     //According to different device performance so that ensure current device could show a good display
     void FixedUpdate()
     {
-        //execute movement every time(only the condition is true will be effected)
-        Movement();
-        //execute jump every time(only the condition is true will be effected)
-        Jump();
+        if (!isHurt)
+        {
+            //execute movement every time(only the condition is true will be effected)
+            Movement();
+            //execute jump every time(only the condition is true will be effected)
+            Jump();
+        }
         //execute switch animation every time(only the condition is true will be effected)
         SwitchAnimation();
     }
@@ -85,6 +94,23 @@ public class PlayerController : MonoBehaviour
             transform.localScale = new Vector3(faceDirection, 1, 1);
         }
         
+        /**
+         * implement crouch
+         */
+        // get the vertical value from input, if the value less than zero then it means the player wants to crouch,
+        // so set crouch mark value to true and set crouch animator value to true at the same time
+        if (!isCrouch && Input.GetAxis("Vertical") <0)
+        {
+            isCrouch = true;
+            animator.SetBool("crouch",true);
+        }
+        // when the crouch mark is true and the vertical value is not less then zero then it means the player wants to stand up,
+        // so switch the crouch mark value back to false and set crouch animator value to false at the sae time.
+        else if (isCrouch && !(Input.GetAxis("Vertical") <0))
+        {
+            isCrouch = false;
+            animator.SetBool("crouch",false);
+        }
     }
 
     //jump function
@@ -115,13 +141,31 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("falling",true);
             }
         }
+        // if the player was hurt then change the hurt mark according the movement speed
+        else if (isHurt)
+        {
+            // set the parameter of animator hurt value as true
+            animator.SetBool("hurt", true);
+            // set the running value of animator to zero so that the player will switch animation from running to idle
+            animator.SetFloat("running",0f);
+            // when the player was hurt and the movement speed is less than 0.1 then change the hurt mark back to false
+            if (Mathf.Abs(rigidbody2D.velocity.x) < 0.1)
+            {
+                // turn back the parameter of animator hurt value to false
+                animator.SetBool("hurt", false);
+                // mean while set the parameter idle as true
+                animator.SetBool("idle", true);
+                // and set hurt mark value back to false
+                isHurt = false;
+            }
+        }
         //when the player touching ground then it means the player was on the ground
         else if (collider2D.IsTouchingLayers(ground))
         {
             //change falling to false
             animator.SetBool("falling",false);
             //mean while set idle as true
-            animator.SetBool("idle",true );
+            animator.SetBool("idle",true);
         }
     }
 
@@ -136,6 +180,32 @@ public class PlayerController : MonoBehaviour
             Debug.Log("after cherry:"+cherry);
             // update the number of cherry collected by the player to the text component text value
             cherryNum.text = cherry.ToString();
+        }
+    }
+    
+    // destory the enemy
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        // if the touched object tag is enemy then go to the next judge statement
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            // if the player is falling then destory the enemy
+            if (animator.GetBool("falling"))
+            {
+                Destroy(other.gameObject);
+                // let the player jump again.
+                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
+                animator.SetBool("jumping",true);
+            }
+            else if (transform.position.x < other.gameObject.transform.position.x)
+            {
+                rigidbody2D.velocity = new Vector2(-10, rigidbody2D.velocity.y);
+                isHurt = true;
+            }else if (transform.position.x > other.gameObject.transform.position.x)
+            {
+                rigidbody2D.velocity = new Vector2(10, rigidbody2D.velocity.y);
+                isHurt = true;
+            }
         }
     }
 }
