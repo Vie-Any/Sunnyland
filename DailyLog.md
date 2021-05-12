@@ -1,5 +1,11 @@
 #Log
 
+## 2021-05-12
+- Use script make the frog movement 
+- Add two margin point for the frog so that the frog will movement between the two margin point 
+- [[video] Chapter 15-The frog movement](https://www.bilibili.com/video/BV1v4411q7ZK)
+
+
 ## 2021-05-11
 - Add an enemy(frog) to the scene
 - Create an idle animation for the frog
