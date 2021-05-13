@@ -18,12 +18,14 @@ public class PlayerController : MonoBehaviour
     //The animator object of the player
     public Animator animator;
 
+    [Space]
     //Movement speed of the player
     public float speed;
 
     //Jump height of the player
     public float jumpForce;
 
+    [Space]
     //The rigid body object of the ground
     public LayerMask ground;
 
@@ -129,6 +131,16 @@ public class PlayerController : MonoBehaviour
     {
         //for ensure the player will not keep idle state all the time so we need to set idle to false first
         animator.SetBool("idle",false);
+
+        /**
+         * Fix: if the player was fall from platform then the player will not trigger falling animation
+         */
+        // when the player y speed less than 0.1f and the player was not touching ground then means the player was falling
+        if (rigidbody2D.velocity.y < 0.1f && !collider2D.IsTouchingLayers(ground))
+        {
+            animator.SetBool("falling",true);
+        }
+        
         //when the player is jumping state
         if (animator.GetBool("jumping"))
         {
@@ -189,10 +201,11 @@ public class PlayerController : MonoBehaviour
         // if the touched object tag is enemy then go to the next judge statement
         if (other.gameObject.CompareTag("Enemy"))
         {
+            Frog frog = other.gameObject.GetComponent<Frog>();
             // if the player is falling then destory the enemy
             if (animator.GetBool("falling"))
             {
-                Destroy(other.gameObject);
+                frog.getHit(); 
                 // let the player jump again.
                 rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
                 animator.SetBool("jumping",true);

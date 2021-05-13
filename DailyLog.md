@@ -1,5 +1,15 @@
 #Log
 
+## 2021-05-13
+- Add animation for the frog
+- Use script to change animation state of the frog(*face direction must be changed before movement, if not the frog may jump to same direction but the display was reversed to another direction*)
+- Add another enemy Eagle
+- Use script to make the eagle fly down and up
+- Add death animation to the frog
+- Use script and animation event to trigger frog death animation play, after that destory frog from the scene
+- [[video] Chapter 16-Animation Event](https://www.bilibili.com/video/BV1v441127vP)
+- [[video] Chapter 17-Add destory animation & add Eagle](https://www.bilibili.com/video/BV1i4411m7fK)
+
 ## 2021-05-12
 - Use script make the frog movement 
 - Add two margin point for the frog so that the frog will movement between the two margin point 
