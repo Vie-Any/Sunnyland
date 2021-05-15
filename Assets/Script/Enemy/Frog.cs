@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Frog : MonoBehaviour
+public class Frog : Enemy
 {
     // the rigid body of the frog
     private Rigidbody2D rigidbody2D;
 
     // the aminator of the frog
-    private Animator animator;
+    // private Animator animator;
 
     // the collider of the frog
     private Collider2D collider2D;
@@ -33,10 +33,11 @@ public class Frog : MonoBehaviour
     private bool FaceLeft = true;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
+        // animator = GetComponent<Animator>();
         collider2D = GetComponent<CircleCollider2D>();
         leftPointX = leftPoint.position.x;
         rightPointX = rightPoint.position.x;
@@ -49,12 +50,19 @@ public class Frog : MonoBehaviour
     void Update()
     {
         //Movement();
-        SwichAnimation();
+        if (!isDead)
+        {
+            SwichAnimation();
+        }
     }
 
     // movement function of the frog
     public void Movement()
     {
+        if (isDead)
+        {
+            return;
+        }
         if (FaceLeft)
         {
             // when the frog position x less than left margin point then reverse the frog's movement direction
@@ -64,8 +72,6 @@ public class Frog : MonoBehaviour
                 transform.localScale = new Vector3(-1, 1, 1);
                 FaceLeft = false;
             }
-
-            Debug.Log("69：FaceLeft: " + FaceLeft + ", player X: " + transform.position.x + ", leftPointX: " + leftPointX);
         }
         else
         {
@@ -118,14 +124,5 @@ public class Frog : MonoBehaviour
         }
     }
 
-    // the frog was hitted by player
-    public void getHit()
-    {
-        animator.SetTrigger("death");
-    }
-
-    public void death()
-    {
-        Destroy(gameObject);
-    }
+    
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Collection
   - Enemy
+  - Death
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Player
+  - Dead
   - 
   - 
   - 
@@ -51,6 +52,9 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 892892387
+    locked: 0
+  - name: Dead
+    uniqueID: 4088008765
     locked: 0
   - name: FrontGround
     uniqueID: 2373130997

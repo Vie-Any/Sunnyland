@@ -2,16 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Eagle : MonoBehaviour
+public class Eagle : Enemy
 {
     // the rigid body of the eagle
     private Rigidbody2D rigidbody2D;
-
-    // the aminator of the frog
-    private Animator animator;
-
-    // the collider of the frog
-    private Collider2D collider2D;
 
     // the margin point of the eagle counld movement
     public Transform top, bottom;
@@ -20,18 +14,17 @@ public class Eagle : MonoBehaviour
     // store the margin point of the frog allow to movement value
     private float topY, bottomY;
 
-    // the frog's movement speed
+    // the eagle's movement speed
     public float speed;
 
     // mark the eagle going up or not
     private bool goingUp = true;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        collider2D = GetComponent<CircleCollider2D>();
         topY = top.position.y;
         bottomY = bottom.position.y;
         // destory the margin point object
@@ -42,7 +35,10 @@ public class Eagle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Fly();
+        if (!isDead)
+        {
+            Fly();
+        }
     }
 
     // movement function of the eagle

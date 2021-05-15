@@ -41,6 +41,15 @@ public class PlayerController : MonoBehaviour
     // mark the player is crouch or not
     private bool isCrouch;
 
+    // the audio of jump
+    public AudioSource jumpAudio;
+
+    // the audio of hurt
+    public AudioSource hurtAudio;
+
+    // the audio of collect cherry
+    public AudioSource cherryAudio;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -122,6 +131,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && collider2D.IsTouchingLayers(ground))
         {
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
+            jumpAudio.Play();
             animator.SetBool("jumping",true);
         }
     }
@@ -186,10 +196,9 @@ public class PlayerController : MonoBehaviour
     {
         if (other.CompareTag("Collection"))
         {
+            cherryAudio.Play();
             Destroy(other.gameObject);
-            Debug.Log("before cherry:"+cherry);
             cherry += 1;
-            Debug.Log("after cherry:"+cherry);
             // update the number of cherry collected by the player to the text component text value
             cherryNum.text = cherry.ToString();
         }
@@ -201,11 +210,11 @@ public class PlayerController : MonoBehaviour
         // if the touched object tag is enemy then go to the next judge statement
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Frog frog = other.gameObject.GetComponent<Frog>();
+            Enemy enemy = other.gameObject.GetComponent<Enemy>();
             // if the player is falling then destory the enemy
             if (animator.GetBool("falling"))
             {
-                frog.getHit(); 
+                enemy.getHit(); 
                 // let the player jump again.
                 rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
                 animator.SetBool("jumping",true);
@@ -213,10 +222,12 @@ public class PlayerController : MonoBehaviour
             else if (transform.position.x < other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(-10, rigidbody2D.velocity.y);
+                hurtAudio.Play();
                 isHurt = true;
             }else if (transform.position.x > other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(10, rigidbody2D.velocity.y);
+                hurtAudio.Play();
                 isHurt = true;
             }
         }
