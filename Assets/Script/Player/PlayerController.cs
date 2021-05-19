@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /**
@@ -12,8 +13,11 @@ public class PlayerController : MonoBehaviour
     //The rigid body object of the player
     public Rigidbody2D rigidbody2D;
 
-    //The collider object of the player
-    public Collider2D collider2D;
+    //The collider object of the player's body
+    public Collider2D bodyCollider2D;
+
+    // The collider object of the player's head
+    public Collider2D headCollider2D;
 
     //The animator object of the player
     public Animator animator;
@@ -50,6 +54,9 @@ public class PlayerController : MonoBehaviour
     // the audio of collect cherry
     public AudioSource cherryAudio;
 
+    // the celling point of the player need to check
+    public Transform cellingCheck;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -62,8 +69,9 @@ public class PlayerController : MonoBehaviour
          * Bug fix , BoxCollider will cause a bug[refer to the DailyLog.md file at 2021-05-07], it's because BoxCollider's corner will touching ground's unit corner, then it will make the player cannot move.
          * To fix the bug: use two collider, BoxCollider is for the player's upper body, the CircleCollider for the player's lower body
          */
-        // collider2D = GetComponent<BoxCollider2D>();
-        collider2D = GetComponent<CircleCollider2D>();
+        // bodyCollider2D = GetComponent<BoxCollider2D>();
+        bodyCollider2D = GetComponent<CircleCollider2D>();
+        headCollider2D = GetComponent<BoxCollider2D>();
     }
 
     // Update is called once per frame
@@ -94,8 +102,8 @@ public class PlayerController : MonoBehaviour
         float faceDirection = Input.GetAxisRaw("Horizontal");
         if (horizontal != 0)
         {
-            //change the position according to the distance of movement(Time.deltaTime means the clock rate of the current device)
-            rigidbody2D.velocity = new Vector2(horizontal * speed * Time.deltaTime, rigidbody2D.velocity.y);
+            //change the position according to the distance of movement(Time.fixedDeltaTime means the clock rate of the current device)
+            rigidbody2D.velocity = new Vector2(horizontal * speed * Time.fixedDeltaTime, rigidbody2D.velocity.y);
             //change the running value of animator's parameter when the function execute every time so that it will show as an animation and switch the player's idle and running state 
             animator.SetFloat("running",Mathf.Abs(faceDirection));
         }
@@ -110,27 +118,29 @@ public class PlayerController : MonoBehaviour
          */
         // get the vertical value from input, if the value less than zero then it means the player wants to crouch,
         // so set crouch mark value to true and set crouch animator value to true at the same time
-        if (!isCrouch && Input.GetAxis("Vertical") <0)
-        {
-            isCrouch = true;
-            animator.SetBool("crouch",true);
-        }
-        // when the crouch mark is true and the vertical value is not less then zero then it means the player wants to stand up,
-        // so switch the crouch mark value back to false and set crouch animator value to false at the sae time.
-        else if (isCrouch && !(Input.GetAxis("Vertical") <0))
-        {
-            isCrouch = false;
-            animator.SetBool("crouch",false);
-        }
+        // if (!isCrouch && Input.GetAxis("Vertical") <0)
+        // {
+        //     isCrouch = true;
+        //     animator.SetBool("crouching",true);
+        // }
+        // // when the crouch mark is true and the vertical value is not less then zero then it means the player wants to stand up,
+        // // so switch the crouch mark value back to false and set crouch animator value to false at the sae time.
+        // else if (isCrouch && !(Input.GetAxis("Vertical") <0))
+        // {
+        //     isCrouch = false;
+        //     animator.SetBool("crouching",false);
+        // }
+        Crouch();
     }
 
     //jump function
     void Jump()
     {
+        Debug.Log("touchGround:"+(bodyCollider2D.IsTouchingLayers(ground)));
         //listen to the space(default setting of unity, Unity menu bar>Edit>project setting>Input manager>Axes) button so that to implement jump function
-        if (Input.GetButtonDown("Jump") && collider2D.IsTouchingLayers(ground))
+        if (Input.GetButtonDown("Jump") && bodyCollider2D.IsTouchingLayers(ground))
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
             jumpAudio.Play();
             animator.SetBool("jumping",true);
         }
@@ -146,7 +156,7 @@ public class PlayerController : MonoBehaviour
          * Fix: if the player was fall from platform then the player will not trigger falling animation
          */
         // when the player y speed less than 0.1f and the player was not touching ground then means the player was falling
-        if (rigidbody2D.velocity.y < 0.1f && !collider2D.IsTouchingLayers(ground))
+        if (rigidbody2D.velocity.y < 0.1f && !bodyCollider2D.IsTouchingLayers(ground))
         {
             animator.SetBool("falling",true);
         }
@@ -182,7 +192,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         //when the player touching ground then it means the player was on the ground
-        else if (collider2D.IsTouchingLayers(ground))
+        else if (bodyCollider2D.IsTouchingLayers(ground))
         {
             //change falling to false
             animator.SetBool("falling",false);
@@ -194,6 +204,7 @@ public class PlayerController : MonoBehaviour
     // if another collider touching current collider then trigger the function
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // collect goods
         if (other.CompareTag("Collection"))
         {
             cherryAudio.Play();
@@ -201,6 +212,15 @@ public class PlayerController : MonoBehaviour
             cherry += 1;
             // update the number of cherry collected by the player to the text component text value
             cherryNum.text = cherry.ToString();
+        }
+
+        // the player drop out of the scene then restart current scene
+        if (other.tag == "DeadLine")
+        {
+            // disable all the audio of the scene
+            GetComponent<AudioSource>().enabled = false;
+            // delay 2 seconds then restart current scene
+            Invoke("Restart",2f);
         }
     }
     
@@ -216,7 +236,7 @@ public class PlayerController : MonoBehaviour
             {
                 enemy.getHit(); 
                 // let the player jump again.
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
+                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
                 animator.SetBool("jumping",true);
             }
             else if (transform.position.x < other.gameObject.transform.position.x)
@@ -231,5 +251,33 @@ public class PlayerController : MonoBehaviour
                 isHurt = true;
             }
         }
+    }
+
+    // crouch function
+    void Crouch()
+    {
+        if (!Physics2D.OverlapCircle(cellingCheck.position,0.2f,ground))
+        {
+            // when the Crouch key down set the crouching state true for trigger crouch animaiont play
+            if (Input.GetButton("Crouch"))
+            {
+                animator.SetBool("crouching",true);
+                headCollider2D.enabled = false;
+                isCrouch = true;
+            }
+            // when the Crouch key up set the crouching state false
+            else
+            {
+                animator.SetBool("crouching",false);
+                headCollider2D.enabled = true;
+                isCrouch = false;
+            }
+        }
+    }
+
+    // restart current scene
+    void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

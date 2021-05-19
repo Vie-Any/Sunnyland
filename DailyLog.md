@@ -1,5 +1,37 @@
 #Log
 
+
+## 2021-05-19
+- Add light effect to make the candle lighting.
+- Add directional light to the scene to enrich the scene.
+- Optimize player controller make the game smooth.
+  + Not effect yet(MovementContoller script didn't mount to the player yet because of the bug.)
+  + Bug: when the player jump first time and fall back on the ground, then the player's animation can not switch to idle.
+- [[🔗video] Chapter 22-2D light effect](https://www.bilibili.com/video/BV1LJ411N7Sr)
+- [[🔗video] Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)
+
+
+## 2021-05-18
+- Got something wrong, the sencond scene was damaged(Maybe because I create tilemap in tile palette and save in same directory)
+- Recreate second scene.
+
+
+## 2021-05-17
+- Install new package[[2d-extras](https://github.com/Unity-Technologies/2d-extras)]
+- Learn to use Rule tiles create new scene map.
+- [[🔗video Mobile 2D game-Chapter 2 - Section 2 & 3 (Need to pay)](https://learn.u3d.cn/tutorial/2d-mobile-mstudio)]
+
+
+## 2021-05-16
+- Implemet crouch function for the player
+- Hide the Box Collider 2D of the player when the player is crouching.
+- Add deadline to the scene 
+- Use script to restart current scene when the player drop out of the scene 
+- Use script to load next scene 
+- [[🔗video] Chapter 20-Crouch](https://www.bilibili.com/video/BV1FJ411K7FD)
+- [[🔗video] Chapter 21-Scene manage](https://www.bilibili.com/video/BV1gJ411N7CZ)
+
+
 ## 2021-05-15
 - Add audio source from asset store. 
 - BGM audio source: [🔗Casual Game BGM #5](https://assetstore.unity.com/packages/audio/music/casual-game-bgm-5-135943) 
