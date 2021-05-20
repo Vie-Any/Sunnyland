@@ -4,7 +4,7 @@
 - Optimize player jump
 - Make the player clound jump two time
 - Bug fixed[2021-05-19 bug]
-  + According to the [[🔗source code](https://github.com/M-Studio-M/2D-Controller) ] of [[🔗video] Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)]
+  + According to the [[🔗source code](https://github.com/M-Studio-M/2D-Controller) ] of [[🔗video - Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)]
 
 
 ## 2021-05-19
