@@ -4,6 +4,7 @@
 - Optimize player jump
 - Make the player clound jump two time
 - Bug fixed[2021-05-19 bug]
+  + According to the [[🔗source code](https://github.com/M-Studio-M/2D-Controller) ] of [[🔗video] Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)]
 
 
 ## 2021-05-19
@@ -12,8 +13,8 @@
 - Optimize player controller make the game smooth.
   + Not effect yet(MovementContoller script didn't mount to the player yet because of the bug.)
   + Bug: when the player jump first time and fall back on the ground, then the player's animation can not switch to idle.
-- [[🔗video] Chapter 22-2D light effect](https://www.bilibili.com/video/BV1LJ411N7Sr)
-- [[🔗video] Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)
+- [[🔗video] Chapter 22-2D light effect](https://www.bilibili.com/video/BV1LJ411N7Sr)]
+- [[🔗video] Optimize jump](https://www.bilibili.com/video/BV1YJ411H7vc)]
 
 
 ## 2021-05-18
