@@ -227,6 +227,7 @@ MonoBehaviour:
   hurtAudio: {fileID: 283549885}
   cherryAudio: {fileID: 2744542515357567911}
   cellingCheck: {fileID: 4807930151796534736}
+  groundCheck: {fileID: 8334672300256531611}
 --- !u!95 &9205612441218761144
 Animator:
   serializedVersion: 3
@@ -259,9 +260,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.07432854, y: -0.72054696}
+  m_Offset: {x: 0.004790485, y: -0.6635816}
   serializedVersion: 2
-  m_Radius: 0.27938318
+  m_Radius: 0.3015368
 --- !u!82 &283549883
 AudioSource:
   m_ObjectHideFlags: 0

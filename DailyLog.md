@@ -1,5 +1,10 @@
 #Log
 
+## 2021-05-20
+- Optimize player jump
+- Make the player clound jump two time
+- Bug fixed[2021-05-19 bug]
+
 
 ## 2021-05-19
 - Add light effect to make the candle lighting.

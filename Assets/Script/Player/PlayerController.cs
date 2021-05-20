@@ -40,10 +40,10 @@ public class PlayerController : MonoBehaviour
     public Text cherryNum;
 
     // mark the player is hurt or not
-    private bool isHurt;
+    private bool isHurt = false;
 
     // mark the player is crouch or not
-    private bool isCrouch;
+    private bool isCrouch = false;
 
     // the audio of jump
     public AudioSource jumpAudio;
@@ -56,6 +56,18 @@ public class PlayerController : MonoBehaviour
 
     // the celling point of the player need to check
     public Transform cellingCheck;
+
+    // the check point of the player is land on the ground or not
+    public Transform groundCheck;
+
+    // mark the player is land on the ground or not, and mark the player is jump or not
+    private bool isGround, isJump;
+
+    // mark the jump button is pressed or not
+    private bool jumpPressed;
+
+    // count jump time
+    private int jumpCount;
 
     // Start is called before the first frame update
     void Start()
@@ -75,20 +87,28 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    //void Update()
-    //{
-    //}
+    void Update()
+    {
+        if (Input.GetButtonDown("Jump") && jumpCount > 0)
+        {
+            jumpPressed = true;
+        }
+    }
 
     //According to different device performance so that ensure current device could show a good display
     void FixedUpdate()
     {
+        isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
         if (!isHurt)
         {
             //execute movement every time(only the condition is true will be effected)
             Movement();
             //execute jump every time(only the condition is true will be effected)
             Jump();
+
+            Crouch();
         }
+
         //execute switch animation every time(only the condition is true will be effected)
         SwitchAnimation();
     }
@@ -96,23 +116,32 @@ public class PlayerController : MonoBehaviour
     //movement function
     void Movement()
     {
-        //the distance of movement
-        float horizontal = Input.GetAxis("Horizontal");
-        //get the direction did the player face to
-        float faceDirection = Input.GetAxisRaw("Horizontal");
-        if (horizontal != 0)
-        {
-            //change the position according to the distance of movement(Time.fixedDeltaTime means the clock rate of the current device)
-            rigidbody2D.velocity = new Vector2(horizontal * speed * Time.fixedDeltaTime, rigidbody2D.velocity.y);
-            //change the running value of animator's parameter when the function execute every time so that it will show as an animation and switch the player's idle and running state 
-            animator.SetFloat("running",Mathf.Abs(faceDirection));
-        }
-        //according the direction of movement change the direction of the player face to
-        if (faceDirection != 0)
-        {
-            transform.localScale = new Vector3(faceDirection, 1, 1);
-        }
+        float horizontalMove = Input.GetAxisRaw("Horizontal");
+        // according the direction of movement change the direction of the player face to
+        rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
         
+        if (horizontalMove != 0)
+        {
+            // change the position according to the distance of movement(Time.fixedDeltaTime means the clock rate of the current device)
+            transform.localScale = new Vector3(horizontalMove, 1, 1);
+        }
+        //the distance of movement
+        // float horizontal = Input.GetAxis("Horizontal");
+        // //get the direction did the player face to
+        // float faceDirection = Input.GetAxisRaw("Horizontal");
+        // if (horizontal != 0)
+        // {
+        //     //change the position according to the distance of movement(Time.fixedDeltaTime means the clock rate of the current device)
+        //     rigidbody2D.velocity = new Vector2(horizontal * speed * Time.fixedDeltaTime, rigidbody2D.velocity.y);
+        //     //change the running value of animator's parameter when the function execute every time so that it will show as an animation and switch the player's idle and running state 
+        //     animator.SetFloat("running",Mathf.Abs(faceDirection));
+        // }
+        // //according the direction of movement change the direction of the player face to
+        // if (faceDirection != 0)
+        // {
+        //     transform.localScale = new Vector3(faceDirection, 1, 1);
+        // }
+
         /**
          * implement crouch
          */
@@ -130,57 +159,73 @@ public class PlayerController : MonoBehaviour
         //     isCrouch = false;
         //     animator.SetBool("crouching",false);
         // }
-        Crouch();
+        // Crouch();
     }
 
     //jump function
     void Jump()
     {
-        Debug.Log("touchGround:"+(bodyCollider2D.IsTouchingLayers(ground)));
-        //listen to the space(default setting of unity, Unity menu bar>Edit>project setting>Input manager>Axes) button so that to implement jump function
-        if (Input.GetButtonDown("Jump") && bodyCollider2D.IsTouchingLayers(ground))
+        if (isGround)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
-            jumpAudio.Play();
-            animator.SetBool("jumping",true);
+            jumpCount = 2;
+            isJump = false;
         }
+        if (jumpPressed && isGround)
+        {
+            isJump = true;
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce);
+            jumpCount--;
+            jumpPressed = false;
+        }
+        else if (jumpPressed && jumpCount > 0 && isJump)
+        {
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce);
+            jumpCount--;
+            jumpPressed = false;
+        }
+        //listen to the space(default setting of unity, Unity menu bar>Edit>project setting>Input manager>Axes) button so that to implement jump function
+        // if (Input.GetButtonDown("Jump") && bodyCollider2D.IsTouchingLayers(ground))
+        // {
+        //     rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
+        //     jumpAudio.Play();
+        //     animator.SetBool("jumping", true);
+        // }
     }
-    
+
     //switch the player's animation
     void SwitchAnimation()
     {
         //for ensure the player will not keep idle state all the time so we need to set idle to false first
-        animator.SetBool("idle",false);
-
+        // animator.SetBool("idle", false);
+        animator.SetFloat("running", Mathf.Abs(rigidbody2D.velocity.x));
         /**
          * Fix: if the player was fall from platform then the player will not trigger falling animation
          */
         // when the player y speed less than 0.1f and the player was not touching ground then means the player was falling
-        if (rigidbody2D.velocity.y < 0.1f && !bodyCollider2D.IsTouchingLayers(ground))
+        // if (rigidbody2D.velocity.y < 0.1f && !bodyCollider2D.IsTouchingLayers(ground))
+        // {
+        //     animator.SetBool("falling", true);
+        // }
+        if (isGround)
         {
+            animator.SetBool("falling", false);
+        }
+        else if (!isGround && rigidbody2D.velocity.y > 0)
+        {
+            animator.SetBool("jumping",true);
+        }
+        else if (rigidbody2D.velocity.y < 0)
+        {
+            animator.SetBool("jumping",false);
             animator.SetBool("falling",true);
         }
-        
-        //when the player is jumping state
-        if (animator.GetBool("jumping"))
-        {
-            //if the player's y less than 0 that means the player was falling
-            if (rigidbody2D.velocity.y < 0)
-            {
-                //change jumping to false
-                animator.SetBool("jumping",false);
-                //mean while set falling as true
-                animator.SetBool("falling",true);
-            }
-        }
-        // if the player was hurt then change the hurt mark according the movement speed
-        else if (isHurt)
+
+        if (isHurt)
         {
             // set the parameter of animator hurt value as true
             animator.SetBool("hurt", true);
             // set the running value of animator to zero so that the player will switch animation from running to idle
-            animator.SetFloat("running",0f);
-            // when the player was hurt and the movement speed is less than 0.1 then change the hurt mark back to false
+            animator.SetFloat("running", 0f);
             if (Mathf.Abs(rigidbody2D.velocity.x) < 0.1)
             {
                 // turn back the parameter of animator hurt value to false
@@ -191,14 +236,45 @@ public class PlayerController : MonoBehaviour
                 isHurt = false;
             }
         }
-        //when the player touching ground then it means the player was on the ground
-        else if (bodyCollider2D.IsTouchingLayers(ground))
-        {
-            //change falling to false
-            animator.SetBool("falling",false);
-            //mean while set idle as true
-            animator.SetBool("idle",true);
-        }
+
+        //when the player is jumping state
+        // if (animator.GetBool("jumping"))
+        // {
+        //     //if the player's y less than 0 that means the player was falling
+        //     if (rigidbody2D.velocity.y < 0)
+        //     {
+        //         //change jumping to false
+        //         animator.SetBool("jumping", false);
+        //         //mean while set falling as true
+        //         animator.SetBool("falling", true);
+        //     }
+        // }
+        // // if the player was hurt then change the hurt mark according the movement speed
+        // else if (isHurt)
+        // {
+        //     // set the parameter of animator hurt value as true
+        //     animator.SetBool("hurt", true);
+        //     // set the running value of animator to zero so that the player will switch animation from running to idle
+        //     animator.SetFloat("running", 0f);
+        //     // when the player was hurt and the movement speed is less than 0.1 then change the hurt mark back to false
+        //     if (Mathf.Abs(rigidbody2D.velocity.x) < 0.1)
+        //     {
+        //         // turn back the parameter of animator hurt value to false
+        //         animator.SetBool("hurt", false);
+        //         // mean while set the parameter idle as true
+        //         animator.SetBool("idle", true);
+        //         // and set hurt mark value back to false
+        //         isHurt = false;
+        //     }
+        // }
+        // //when the player touching ground then it means the player was on the ground
+        // else if (bodyCollider2D.IsTouchingLayers(ground))
+        // {
+        //     //change falling to false
+        //     animator.SetBool("falling", false);
+        //     //mean while set idle as true
+        //     animator.SetBool("idle", true);
+        // }
     }
 
     // if another collider touching current collider then trigger the function
@@ -220,10 +296,10 @@ public class PlayerController : MonoBehaviour
             // disable all the audio of the scene
             GetComponent<AudioSource>().enabled = false;
             // delay 2 seconds then restart current scene
-            Invoke("Restart",2f);
+            Invoke("Restart", 2f);
         }
     }
-    
+
     // destory the enemy
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -234,17 +310,21 @@ public class PlayerController : MonoBehaviour
             // if the player is falling then destory the enemy
             if (animator.GetBool("falling"))
             {
-                enemy.getHit(); 
+                enemy.getHit();
                 // let the player jump again.
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
-                animator.SetBool("jumping",true);
+                // rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.fixedDeltaTime);
+                // animator.SetBool("jumping", true);
+                jumpPressed = true;
+                jumpCount++;
+                isJump = true;
             }
             else if (transform.position.x < other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(-10, rigidbody2D.velocity.y);
                 hurtAudio.Play();
                 isHurt = true;
-            }else if (transform.position.x > other.gameObject.transform.position.x)
+            }
+            else if (transform.position.x > other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(10, rigidbody2D.velocity.y);
                 hurtAudio.Play();
@@ -256,22 +336,34 @@ public class PlayerController : MonoBehaviour
     // crouch function
     void Crouch()
     {
-        if (!Physics2D.OverlapCircle(cellingCheck.position,0.2f,ground))
+        if (isGround)
         {
-            // when the Crouch key down set the crouching state true for trigger crouch animaiont play
             if (Input.GetButton("Crouch"))
             {
-                animator.SetBool("crouching",true);
+                animator.SetBool("crouching", true);
                 headCollider2D.enabled = false;
                 isCrouch = true;
             }
-            // when the Crouch key up set the crouching state false
             else
             {
-                animator.SetBool("crouching",false);
+                animator.SetBool("crouching", false);
                 headCollider2D.enabled = true;
                 isCrouch = false;
             }
+            // when the Crouch key down set the crouching state true for trigger crouch animaiont play
+            // if (Input.GetButton("Crouch"))
+            // {
+            //     animator.SetBool("crouching", true);
+            //     headCollider2D.enabled = false;
+            //     isCrouch = true;
+            // }
+            // // when the Crouch key up set the crouching state false
+            // else
+            // {
+            //     animator.SetBool("crouching", false);
+            //     headCollider2D.enabled = true;
+            //     isCrouch = false;
+            // }
         }
     }
 

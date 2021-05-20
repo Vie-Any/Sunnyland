@@ -6,8 +6,9 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     private Rigidbody2D rigidbody2D;
-    private Collider2D headCollider2D;
-    private Collider2D bodyCollider2D;
+    // private Collider2D headCollider2D;
+    // private Collider2D bodyCollider2D;
+    private Collider2D collider2D;
     private Animator animator;
 
     public float speed, jumpForce;
@@ -26,8 +27,9 @@ public class MovementController : MonoBehaviour
     void Start()
     {
         rigidbody2D = GetComponent<Rigidbody2D>();
-        headCollider2D = GetComponent<BoxCollider2D>();
-        bodyCollider2D = GetComponent<CircleCollider2D>();
+        // headCollider2D = GetComponent<BoxCollider2D>();
+        // bodyCollider2D = GetComponent<CircleCollider2D>();
+        collider2D = GetComponent<Collider2D>();
         animator = GetComponent<Animator>();
     }
 
@@ -42,7 +44,7 @@ public class MovementController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        isGround = Physics2D.OverlapCircle(groundCheck.position, 0.2f, ground);
+        isGround = Physics2D.OverlapCircle(groundCheck.position, 0.1f, ground);
         GroundMovement();
         Jump();
         SwitchAnimation();
@@ -61,7 +63,6 @@ public class MovementController : MonoBehaviour
 
     void Jump()
     {
-        Debug.Log("Jump: "+(Input.GetButtonDown("Jump"))+" Horizontal: "+ (Input.GetAxisRaw("Horizontal")));
         if (isGround)
         {
             jumpCount = 2;
