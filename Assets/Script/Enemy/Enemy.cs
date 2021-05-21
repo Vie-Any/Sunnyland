@@ -28,17 +28,22 @@ public class Enemy : MonoBehaviour
     // the enemy was hitted by player
     public void getHit()
     {
-        isDead = true;
-        // change the tag of current enemy so that the player will not trigger hit again
-        tag = "Death";
-        // change the sorting layer name of current enemy so that the player will not detect the enemy again
-        sprite.sortingLayerName = "Dead";
-        // change the layer of current enemy so that the enemy can not collision any other object
-        gameObject.layer = LayerMask.NameToLayer("Dead");
-        // play the death audio of current enemy
-        deathAudio.Play();
-        // trigger death animation
-        animator.SetTrigger("death");
+        if (!isDead)
+        {
+            isDead = true;
+            GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Static;
+            GetComponent<Collider2D>().enabled = false;
+            // change the tag of current enemy so that the player will not trigger hit again
+            // tag = "Death";
+            // change the sorting layer name of current enemy so that the player will not detect the enemy again
+            // sprite.sortingLayerName = "Dead";
+            // change the layer of current enemy so that the enemy can not collision any other object
+            // gameObject.layer = LayerMask.NameToLayer("Dead");
+            // play the death audio of current enemy
+            deathAudio.Play();
+            // trigger death animation
+            animator.SetTrigger("death");
+        }
     }
 
     // destory current enemy from the scene

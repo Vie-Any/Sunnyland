@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 4262307798717313526}
   - component: {fileID: 4262307798717313525}
   m_Layer: 5
-  m_Name: CherryIcon
+  m_Name: GoodsIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -313,7 +313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: bdce2a9cb3d0242958c2593a3b8d8742, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -414,7 +414,7 @@ GameObject:
   - component: {fileID: 4262307799656417471}
   - component: {fileID: 4262307799656417470}
   m_Layer: 5
-  m_Name: Cherry
+  m_Name: Goods
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

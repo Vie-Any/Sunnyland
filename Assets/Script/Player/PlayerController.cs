@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     //The rigid body object of the ground
     public LayerMask ground;
 
+    [SerializeField]
     // the number of cherry collected by the player
     public int cherry = 0;
 
@@ -93,6 +94,8 @@ public class PlayerController : MonoBehaviour
         {
             jumpPressed = true;
         }
+        // update the number of cherry collected by the player to the text component text value
+        cherryNum.text = cherry.ToString();
     }
 
     //According to different device performance so that ensure current device could show a good display
@@ -284,10 +287,10 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("Collection"))
         {
             cherryAudio.Play();
-            Destroy(other.gameObject);
-            cherry += 1;
-            // update the number of cherry collected by the player to the text component text value
-            cherryNum.text = cherry.ToString();
+            // Destroy(other.gameObject);
+            // cherry += 1;
+            other.GetComponent<Animator>().Play("GoodsBoom");
+            other.GetComponent<Collider2D>().enabled = false;
         }
 
         // the player drop out of the scene then restart current scene
@@ -336,7 +339,8 @@ public class PlayerController : MonoBehaviour
     // crouch function
     void Crouch()
     {
-        if (isGround)
+        // condition: the player must land on the ground and the celling check point not touch the ground
+        if (isGround && !Physics2D.OverlapCircle(cellingCheck.position,0.2f,ground))
         {
             if (Input.GetButton("Crouch"))
             {
@@ -371,5 +375,10 @@ public class PlayerController : MonoBehaviour
     void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void UpdateScore()
+    {
+        cherry++;
     }
 }

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7216638442754663223}
   - component: {fileID: 7216638442754663222}
   - component: {fileID: 7216638442754663217}
+  - component: {fileID: 7456158672562975814}
   m_Layer: 0
   m_Name: Cherry
   m_TagString: Collection
@@ -71,7 +72,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1921836299
-  m_SortingLayer: 2
+  m_SortingLayer: 5
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: bdce2a9cb3d0242958c2593a3b8d8742, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -129,3 +130,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.763577, y: 0.7511015}
   m_EdgeRadius: 0
+--- !u!114 &7456158672562975814
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7216638442754663216}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72d3e428aaa774a2fb10c4f57603b388, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -1,5 +1,27 @@
 # Log
 
+## 2021-05-21
+- Optimize the player's animation state switch
+- Optimize the cherry number display, change cherry number text display update per frame
+- Optimize the cherry destory effect
+- Optimize the enemy death effect(after the player touch the enemy then disable enemy's collider for avoid touch again in short time)
+- Use script to make the background things move when the player moving at the same time
+- Add a new scene for main menu
+- Add UI.Pannel
+- Add UI.Button - TextMeshPro
+- Add UI.TextMeshPro
+- Create a script to start the game and load the first game scene
+- Implement quit game via script
+- Add an animation to the scene for the main menu fade in
+- Implement pause game
+- Add an audio mixer
+- Use script update audio volume
+- [[🔗video] Chapter 23-Optimize code & Fix bug](https://www.bilibili.com/video/BV1PJ411w7KT)]
+- [[🔗video] Chapter 24-Parallax](https://www.bilibili.com/video/BV1LJ411w7tF)]
+- [[🔗video] Chapter 25-Main menu](https://www.bilibili.com/video/BV1gJ411374p)]
+- [[🔗video] Chapter 25-Pause menu & audion volume setting ](https://www.bilibili.com/video/BV1aJ411M7dA)]
+
+
 ## 2021-05-20
 - Optimize player jump
 - Make the player clound jump two time
