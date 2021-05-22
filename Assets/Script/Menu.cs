@@ -12,6 +12,11 @@ public class Menu : MonoBehaviour
     // the main audio mixer
     public AudioMixer audioMixer;
 
+    public void Start()
+    {
+        SetVolume(-40f);
+    }
+
     // start the game
     public void StartGame()
     {

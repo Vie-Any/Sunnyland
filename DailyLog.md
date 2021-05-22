@@ -1,5 +1,14 @@
 # Log
 
+## 2021-05-22
+- Optimize audio control
+- Learn how to build target platform executable file
+- [[🔗video] Chapter 27-Touch able ](https://www.bilibili.com/video/BV1GJ411u75o)]
+- [[🔗video] Chapter 28-Jump twice & single direction platform ](https://www.bilibili.com/video/BV1pJ411T7vR)]
+- [[🔗video] Chapter 29-Sound manage ](https://www.bilibili.com/video/BV1zE411R7fF)]
+- [[🔗video] Chapter 30-Build target ](https://www.bilibili.com/video/BV17E411X7Ss)]
+
+
 ## 2021-05-21
 - Optimize the player's animation state switch
 - Optimize the cherry number display, change cherry number text display update per frame
@@ -19,7 +28,7 @@
 - [[🔗video] Chapter 23-Optimize code & Fix bug](https://www.bilibili.com/video/BV1PJ411w7KT)]
 - [[🔗video] Chapter 24-Parallax](https://www.bilibili.com/video/BV1LJ411w7tF)]
 - [[🔗video] Chapter 25-Main menu](https://www.bilibili.com/video/BV1gJ411374p)]
-- [[🔗video] Chapter 25-Pause menu & audion volume setting ](https://www.bilibili.com/video/BV1aJ411M7dA)]
+- [[🔗video] Chapter 26-Pause menu & audion volume setting ](https://www.bilibili.com/video/BV1aJ411M7dA)]
 
 
 ## 2021-05-20

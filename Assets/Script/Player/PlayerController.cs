@@ -47,13 +47,13 @@ public class PlayerController : MonoBehaviour
     private bool isCrouch = false;
 
     // the audio of jump
-    public AudioSource jumpAudio;
+    // public AudioSource jumpAudio;
 
     // the audio of hurt
-    public AudioSource hurtAudio;
+    // public AudioSource hurtAudio;
 
     // the audio of collect cherry
-    public AudioSource cherryAudio;
+    // public AudioSource cherryAudio;
 
     // the celling point of the player need to check
     public Transform cellingCheck;
@@ -94,6 +94,7 @@ public class PlayerController : MonoBehaviour
         {
             jumpPressed = true;
         }
+
         // update the number of cherry collected by the player to the text component text value
         cherryNum.text = cherry.ToString();
     }
@@ -122,7 +123,7 @@ public class PlayerController : MonoBehaviour
         float horizontalMove = Input.GetAxisRaw("Horizontal");
         // according the direction of movement change the direction of the player face to
         rigidbody2D.velocity = new Vector2(horizontalMove * speed, rigidbody2D.velocity.y);
-        
+
         if (horizontalMove != 0)
         {
             // change the position according to the distance of movement(Time.fixedDeltaTime means the clock rate of the current device)
@@ -173,18 +174,21 @@ public class PlayerController : MonoBehaviour
             jumpCount = 2;
             isJump = false;
         }
+
         if (jumpPressed && isGround)
         {
             isJump = true;
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce);
             jumpCount--;
             jumpPressed = false;
+            SoundManager.instance.JumpAudio();
         }
         else if (jumpPressed && jumpCount > 0 && isJump)
         {
             rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce);
             jumpCount--;
             jumpPressed = false;
+            SoundManager.instance.JumpAudio();
         }
         //listen to the space(default setting of unity, Unity menu bar>Edit>project setting>Input manager>Axes) button so that to implement jump function
         // if (Input.GetButtonDown("Jump") && bodyCollider2D.IsTouchingLayers(ground))
@@ -212,15 +216,16 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             animator.SetBool("falling", false);
+            animator.SetBool("jumping",false);
         }
         else if (!isGround && rigidbody2D.velocity.y > 0)
         {
-            animator.SetBool("jumping",true);
+            animator.SetBool("jumping", true);
         }
         else if (rigidbody2D.velocity.y < 0)
         {
-            animator.SetBool("jumping",false);
-            animator.SetBool("falling",true);
+            animator.SetBool("jumping", false);
+            animator.SetBool("falling", true);
         }
 
         if (isHurt)
@@ -286,7 +291,8 @@ public class PlayerController : MonoBehaviour
         // collect goods
         if (other.CompareTag("Collection"))
         {
-            cherryAudio.Play();
+            // cherryAudio.Play();
+            SoundManager.instance.CollectGoods();
             // Destroy(other.gameObject);
             // cherry += 1;
             other.GetComponent<Animator>().Play("GoodsBoom");
@@ -324,13 +330,15 @@ public class PlayerController : MonoBehaviour
             else if (transform.position.x < other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(-10, rigidbody2D.velocity.y);
-                hurtAudio.Play();
+                // hurtAudio.Play();
+                SoundManager.instance.HurtAudio();
                 isHurt = true;
             }
             else if (transform.position.x > other.gameObject.transform.position.x)
             {
                 rigidbody2D.velocity = new Vector2(10, rigidbody2D.velocity.y);
-                hurtAudio.Play();
+                // hurtAudio.Play();
+                SoundManager.instance.HurtAudio();
                 isHurt = true;
             }
         }
@@ -340,7 +348,7 @@ public class PlayerController : MonoBehaviour
     void Crouch()
     {
         // condition: the player must land on the ground and the celling check point not touch the ground
-        if (isGround && !Physics2D.OverlapCircle(cellingCheck.position,0.2f,ground))
+        if (isGround && !Physics2D.OverlapCircle(cellingCheck.position, 0.2f, ground))
         {
             if (Input.GetButton("Crouch"))
             {
