@@ -216,7 +216,7 @@ public class PlayerController : MonoBehaviour
         if (isGround)
         {
             animator.SetBool("falling", false);
-            animator.SetBool("jumping",false);
+            animator.SetBool("jumping", false);
         }
         else if (!isGround && rigidbody2D.velocity.y > 0)
         {

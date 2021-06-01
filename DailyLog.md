@@ -1,5 +1,7 @@
 # Log
 
+### finish the course at 2021-05-22
+
 ## 2021-05-22
 - Optimize audio control
 - Learn how to build target platform executable file
